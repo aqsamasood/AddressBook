@@ -1,6 +1,6 @@
-var appId = "H12ebyiw3KFdV5dCD2LgqeBJ3yP3rW4iZnmRhlGp";
+  var appId = "H12ebyiw3KFdV5dCD2LgqeBJ3yP3rW4iZnmRhlGp";
 var apiKey = "Eiob2zKJg8XlAGgihlF0CXwtIJkyDlrwIoyuYlvf";
-var url = "https://api.parse.com/1/classes/addressBook";
+var url = "https://api.parse.com/1/classes/AddressBook";
 var jsKey="8iMqbUjKprcDQc1RJjGcJizjIqSRi9wqZUjp6yAd"
 Parse.initialize(appId,jsKey);
 var id="personInfo";
@@ -39,8 +39,8 @@ function addData ()
 
 function writeData() 
 {
-  var addressBook = Parse.Object.extend("addressBook");
-  var query=new Parse.Query(addressBook);
+  var AddressBook = Parse.Object.extend("AddressBook");
+  var query=new Parse.Query(AddressBook);
   query.find({
     success:function(results){
       var len=results.length;
@@ -65,8 +65,8 @@ function search(){
       alert("Enter Name for searching records!!");
       return;
     }
-  var addressBook = Parse.Object.extend("addressBook");
-  var query = new Parse.Query(addressBook);
+  var AddressBook = Parse.Object.extend("AddressBook");
+  var query = new Parse.Query(AddressBook);
   query.equalTo("Name", searchName);
   query.first({
   success: function(results) {
@@ -84,8 +84,8 @@ function search(){
 
 function deleteQuery(name)
 {
-  var addressBook = Parse.Object.extend("addressBook");
-  var query = new Parse.Query(addressBook);
+  var AddressBook = Parse.Object.extend("AddressBook");
+  var query = new Parse.Query(AddressBook);
   var obj;
   query.equalTo("Name", name);
   query.first({
@@ -106,8 +106,8 @@ function deleteQuery(name)
 function sort_by_name()
 {
   var id="personInfo"
-  var addressBook = Parse.Object.extend("addressBook");
-  var query = new Parse.Query(addressBook);
+  var AddressBook = Parse.Object.extend("AddressBook");
+  var query = new Parse.Query(AddressBook);
   query.ascending("Name");
   query.find({ 
   success: function(results) {
@@ -126,8 +126,8 @@ function sort_by_name()
 function sort_by_address()
 {
   var id="personInfo"
-  var addressBook = Parse.Object.extend("addressBook");
-  var query = new Parse.Query(addressBook);
+  var AddressBook = Parse.Object.extend("AddressBook");
+  var query = new Parse.Query(AddressBook);
   query.ascending("Address");
   query.find({ 
   success: function(results) {
@@ -199,7 +199,6 @@ $(document).ready(function(e)
       
       break;
       }
-     $(this).reload();
      
     });
  

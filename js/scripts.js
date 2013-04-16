@@ -1,9 +1,16 @@
-var appId = "H12ebyiw3KFdV5dCD2LgqeBJ3yP3rW4iZnmRhlGp";
+  var appId = "H12ebyiw3KFdV5dCD2LgqeBJ3yP3rW4iZnmRhlGp";
 var apiKey = "Eiob2zKJg8XlAGgihlF0CXwtIJkyDlrwIoyuYlvf";
 var url = "https://api.parse.com/1/classes/addressBook";
 var jsKey="8iMqbUjKprcDQc1RJjGcJizjIqSRi9wqZUjp6yAd"
 Parse.initialize(appId,jsKey);
 var id="personInfo";
+function clear(id)
+{
+  id.innerHTML="";
+}
+
+/******* adding data  **********/
+
 function addData () 
 {
     var xhr = new XMLHttpRequest();
@@ -26,38 +33,23 @@ function addData ()
     }
     var data = JSON.stringify({ 'Name': person.name,'Address':person.address });
     xhr.send(data);
-    // var len=arr.length;
-    // arr[len]=person;  
+    writeData();
 }
 
-function clear(id)
-{
-  id.innerHTML="";
-}
+
+/************* Write function *****************/ 
 
 function writeData() 
 {
-  
   var addressBook = Parse.Object.extend("addressBook");
-  var query = new Parse.Query(addressBook);
-  query.get("7cU26gH6Wf",  {
-  success: function(name) {
-    // The object was retrieved successfully.
-    console.log(name.get("Name"));
-  },
-  error: function(object, error) {
-    // The object was not retrieved successfully.
-    // error is a Parse.Error with an error code and description.
-  }
-});
-  var newQuery=new Parse.Query(addressBook);
-  newQuery.find({
+  var query=new Parse.Query(addressBook);
+  query.find({
     success:function(results){
       var len=results.length;
       var text="<p></p>";
-     for(i=0;i<len;i++)
+      for(i=0;i<len;i++)
       text+="<p>Name: "+results[i].get("Name")+"&nbsp &nbsp &nbsp Address: "+results[i].get("Address")+"<br>"; 
-    document.getElementById(id).innerHTML=text;
+      document.getElementById(id).innerHTML=text;
     },
     error:function(error){
       console.log("An error occured");
@@ -65,9 +57,11 @@ function writeData()
   });      
 }
 
+
+/************ Search function ****************/
+
 function search(){
   var searchName=$("#searchName").val();
-  alert(searchName);
   if(!searchName)
     {
       alert("Enter Name for searching records!!");
@@ -85,12 +79,13 @@ function search(){
     alert("Error: " + error.code + " " + error.message);
   }
 });
- //  alert('Search Fail: Name not found!!');
+
 }
+
+/*************** Delete Function ***********************/
 
 function deleteQuery(name)
 {
-  alert(name);
   var addressBook = Parse.Object.extend("addressBook");
   var query = new Parse.Query(addressBook);
   var obj;
@@ -99,13 +94,17 @@ function deleteQuery(name)
     success:function(results){
       results.destroy({
     success:function(obj){
+      writeData(); 
       alert("Deleted!!")
     }
   }); 
     }
   });
-  window.location.reload();
+ 
 }
+
+/**************** Sort By Name ******************/
+
 function sort_by_name()
 {
   var id="personInfo"
@@ -114,34 +113,25 @@ function sort_by_name()
   query.ascending("Name");
   query.find({ 
   success: function(results) {
-    // results has the list of users with a hometown team with a winning record
-    console.log("result count" + results.length);
-    console.log(results[10].get("Name"));
-    clear("#personInfo");
-    var text="<p></p>"
-    var len=results.length;
-    for(i=0;i<len;i++)
-      text+="<p>Name: "+results[i].get("Name")+"&nbsp &nbsp &nbsp Address: "+results[i].get("Address")+"<br>"; 
-    document.getElementById(id).innerHTML=text;
-
-
-  }
-});
-  
+    writeData();
+    }
+ });
 }
+
+/********************** Sort By Address ***************************/
 
 function sort_by_address()
 {
-  arr.sort(function(a, b)
-  {
-    nameA=a.address.toLowerCase();
-    nameB=b.address.toLowerCase();
-    if (nameA < nameB) //sort string ascending
-      return -1 
-    if (nameA > nameB)
-      return 1
-    return 0 //default return value (no sorting)
-    })
+  var id="personInfo"
+  var addressBook = Parse.Object.extend("addressBook");
+  var query = new Parse.Query(addressBook);
+  query.ascending("Address");
+  query.find({ 
+  success: function(results) {
+    writeData();
+    }
+ });
+
 }
 
 
@@ -153,9 +143,8 @@ $(document).ready(function(e)
     $("#form_add").click(function(e) 
     {
     addData();
-    writeData();
+    // writeData();
     e.preventDefault();
-    $(this).reload();
    
     });
  
@@ -164,7 +153,6 @@ $(document).ready(function(e)
    $('#search').click(function(e)
    {
     search();
-    $(this).reload();
      e.preventDefault();
    });
 
@@ -202,7 +190,6 @@ $(document).ready(function(e)
       
       break;
       }
-     $(this).reload();
      
     });
  

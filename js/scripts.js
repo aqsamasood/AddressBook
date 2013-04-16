@@ -66,18 +66,29 @@ function search(){
       alert("Enter Name for searching records!!");
       return;
     }
+  // var arr=searchName.split("");
+  // alert(arr[0]);
   var AddressBook = Parse.Object.extend("AddressBook");
   var query = new Parse.Query(AddressBook);
-  query.equalTo("Name", searchName);
-  query.first({
-  success: function(results) {
-    console.log(results.get("Name"));
-    $('#searchResult').append('<p>Name: '+results.get("Name")+'&nbsp&nbsp&nbsp Address: '+results.get("Address")+'</p>');
-  },
-  error: function(error) {
-    alert("Error: " + error.code + " " + error.message);
-  }
-});
+  query.matches("Name",searchName);
+  query.find({
+    success:function(results){
+      var text="<p></p>"
+      for(i=0;i<results.length;i++)
+       text+="<p>Name: "+results[i].get("Name")+"&nbsp &nbsp &nbsp Address: "+results[i].get("Address")+"<br>"; 
+      document.getElementById("searchResult").innerHTML=text;
+    }
+  })
+//   query.equalTo("Name", searchName);
+//   query.first({
+//   success: function(results) {
+//     console.log(results.get("Name"));
+//     $('#searchResult').append('<p>Name: '+results.get("Name")+'&nbsp&nbsp&nbsp Address: '+results.get("Address")+'</p>');
+//   },
+//   error: function(error) {
+//     alert("Error: " + error.code + " " + error.message);
+//   }
+// });
 
 }
 

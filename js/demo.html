@@ -1,0 +1,81 @@
+<form enctype="multipart/form-data" method="post" name="fileinfo" style="visibility:hidden">
+   <fieldset>
+      <input type ="file" name ="fileselect" id="fileselect"></input>
+   </fieldset>
+</form>
+
+<script type="text/javascript">
+   // set event listener for call preview after select file
+   var fileselect = $('#fileselect');
+   fileselect.bind("change", fileSelectHandler);
+</script>
+
+<!-- To show the file selection dialog, add this JavaScript to run on button (Select File) click: -->
+<script>
+$('#fileselect').trigger('click');
+
+var file;
+
+function fileSelectHandler(e) {
+   
+   var files = e.target.files || e.dataTransfer.files;
+   file = files[0];
+   previewFile();
+}
+
+function upload() {
+
+   var serverUrl = 'https://api.parse.com/1/files/' + file.name;
+
+   $.ajax({
+      type: "POST",
+      beforeSend: function(request) {
+         request.setRequestHeader("X-Parse-Application-Id", 'your_key_from_parse');
+         request.setRequestHeader("X-Parse-REST-API-Key", 'your_key_from_parse');
+         request.setRequestHeader("Content-Type", file.type);
+      },
+      url: serverUrl,
+      data: file,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+
+         // save result from Parse local storage, so we can use it later
+         localStorage.setItem('parse_file_name', data.name);
+         localStorage.setItem('parse_url', data.url);
+                  
+                  // this is actual file name we uploaded, which is different from name Parse sends us bak
+         localStorage.setItem('file_name', file.name);
+
+         // OPTIONAL: add service to save file name/URL to a list
+      },
+      error: function(data) {
+         var obj = jQuery.parseJSON(data);
+         alert(obj.error);
+      }
+   });
+}
+
+function previewFile() {
+
+   var previewContainer = $('table[dsid=preview]');
+   var fileName = $('[name=fileName]');
+
+  // make the preview container visible once a file was selected
+  previewContainer.toggle();
+
+  // set the file name
+  fileName.text(file.name);
+
+  // display image in preview container
+  if (file.type.indexOf("image") == 0) {
+     var reader = new FileReader();
+     reader.onload = function(e) {
+        var image = $('[name=image]');
+        image.attr('src', e.target.result);
+        $('[class=mobileimage1_div]').show();
+     }
+     reader.readAsDataURL(file);
+   }
+}
+</script>

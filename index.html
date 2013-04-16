@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://www.parsecdn.com/js/parse-1.1.15.min.js"></script>
+<script src="js/scripts1.js"></script>
+<script>document.documentElement.className='js';</script>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<title>AddressBook</title>
+<body onload="writeData();">
+<div id="primary">
+	<div class="personalInfo">
+		<h1>Personal Data</h1>
+		<ul>
+			<li>
+			Name <input type="text" id="name" name="name"/>
+			</li>
+			<li>
+			Address <input type="text" id="address" name="address"/>
+			</li>
+			<button id="form_add">Add</button>
+		</ul>
+	</div>
+
+	<div class="query">
+		<h1>Query</h1>
+		<ul>
+			<li>
+			Search Query <input type="text" id="searchName">
+			<button id="search">Search</button>
+			</li>
+			<li>
+			Delete Query <input type="text" id="deleteInfo">
+			<button id="delete">Delete</button>
+			</li>
+		</ul>
+	</div>
+	<div class="sort">
+		<h1>Sort</h1>
+		<ul>
+			<li>
+			<input id="sortname" type="radio" value="sort_by_name" name="sort" chechked>Sort By Name </li>
+			<li>
+			<input id="sortaddress" type="radio" value="sort_by_address" name="sort">Sort By Address </li>
+			<li><button id="sort">Sort</button></li>
+		</ul>
+	</div>
+
+</div>
+<div id="secondary">	
+	<div class="addressbook">
+		<h2>Address Book</h2>
+		<div id="personInfo">
+		
+		</div>
+	</div>
+
+
+	<div class="search_area">
+		<h2>Search Result</h2>
+		<div id="searchResult">
+			
+	    </div>
+	</div>
+</div>
+</body>
